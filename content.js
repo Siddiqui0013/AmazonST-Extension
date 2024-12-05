@@ -59,11 +59,20 @@ for (const selector of imageSelectors) {
     }
 }
 
-let fulfillmentType = null
-if (document.querySelector('.sns-shipping-message') || document.querySelector('.prime-shipping-message')) {
-    fulfillmentType = 'FBA';
-} else if (document.querySelector('.merchant-shipping-message')) {
+let fulfillmentType = ""
+
+// if (document.getElementById("sellerProfileTriggerId") ) {
+//     fulfillmentType = 'FBA';
+// } else {
+//     fulfillmentType = 'FBM';
+// }
+
+  // fulfillmentType = document.getElementById("sellerProfileTriggerId").textContent
+
+if ( document.getElementById("sellerProfileTriggerId") ) {
     fulfillmentType = 'FBM';
+} else {
+    fulfillmentType = 'FBA';
 }
 
 
@@ -129,7 +138,7 @@ function fetchAndDisplayData() {
   document.getElementById("sidebar-asin").textContent = productData.asin || "Not found";
   document.getElementById("sidebar-merchant").textContent = productData.merchantId || "Not found";
   document.getElementById("sidebar-price").textContent = productData.price || "Not found";
-  document.getElementById("sidebar-fulfillment").textContent = productData.fulfillmentType || "Not available";
+  document.getElementById("sidebar-fulfillment").textContent = productData.fulfillmentType? productData.fulfillmentType : "Not available";
   document.getElementById("sidebar-lowest-fba").textContent = productData.lowestFBA || "Not available";
   document.getElementById("sidebar-lowest-fbm").textContent = productData.lowestFBM || "Not available";
   document.getElementById("sidebar-buybox").textContent = productData.buyboxSeller || "Not available";
