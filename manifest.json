@@ -8,11 +8,16 @@
   "content_scripts": [
     {
       "matches": ["https://www.amazon.com/*"],
+      "css": ["sidebar.css"],
       "js": ["content.js"]
     }
   ],
+  "action": {},
   "background": {
     "service_worker": "background.js"
   },
-  "action": {}
+  "web_accessible_resources": [{
+    "resources": ["sidebar.html"],
+    "matches": ["https://www.amazon.com/*"]
+  }]
 }
