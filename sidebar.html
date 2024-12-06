@@ -1,5 +1,228 @@
 <!DOCTYPE html>
+
 <div class="sidebar-content">
+  <header class="header">
+    <div class="dd">
+      <button id="close-button">✕</button>
+      <div class="header-icons">
+        <button class="notification-btn">🔔</button>
+        <button class="account-btn">👤</button>
+      </div>
+    </div>
+  </header>
+  
+  <main>
+
+    <section class="product-basic">
+      <div class="box">
+        <img id="sidebar-image" width="200" height="200" src="" alt="">
+      </div>
+      <div class="box">
+        <p><span id="sidebar-title">Loading...</span></p>
+      </div>
+      <div class="box">
+        <p><span id="sidebar-asin">Loading...</span></p>
+      </div>
+      <div class="box">
+        <p><span id="sidebar-price">Loading...</span></p>
+      </div>
+      <div class="box">
+      </div>
+    </section>
+
+    <div class="info-table">
+      <div class="table-header1">
+        Info
+      </div>
+      <div class="table-content">
+        <div class="table-row">
+          <div class="cell">Eligible</div>
+          <div class="cell" id="sidebar-fulfillment"> </div>
+        </div>
+        <div class="table-row">
+          <div class="cell">BSR</div>
+          <div class="cell">4k (1%)</div>
+        </div>
+        <div class="table-row">
+          <div class="cell">Est. Sales</div>
+          <div class="cell" id="sidebar-sold"></div>
+        </div>
+        <div class="table-row">
+          <div class="cell">Max Cost</div>
+          <div class="cell">$ 62.98</div>
+        </div>
+        <div class="table-row">
+          <div class="cell">Cost Price</div>
+          <div class="cell">$ 0.00</div>
+        </div>
+        <div class="table-row">
+          <div class="cell">Sale Price</div>
+          <div class="cell">$ 107.98</div>
+        </div>
+
+        <div class="table-row">
+          <div class="cell">FBA Fee</div>
+          <div class="cell" id="sidebar-fba"></div>
+        </div>
+
+        <div class="table-row">
+          <div class="cell">Profit</div>
+          <div class="cell">$ 81.88</div>
+        </div>
+
+        <div class="table-row">
+          <div class="cell">ROI</div>
+          <div class="cell">∞%</div>
+        </div>
+        <div class="table-row">
+          <div class="cell">Category</div>
+          <div class="cell" id="sidebar-category"></div>
+        </div>
+        <div class="table-row">
+          <div class="cell">Merchant ID</div>
+          <div class="cell" id="sidebar-merchant"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="rank-price-table">
+      <div class="table-header2">
+        Rank & Price
+      </div>
+      <div class="table-content">
+        <div class="table-row">
+          <div class="cell">BSR (Top %)</div>
+          <div class="cell">3,534 (0.00%)</div>
+        </div>
+        <div class="table-row">
+          <div class="cell">Buy Box</div>
+          <div class="cell" id="sidebar-buybox"></div>
+        </div>
+        <div class="table-row">
+          <div class="cell">Amazon</div>
+          <div class="cell">-</div>
+        </div>
+        <div class="table-row">
+          <div class="cell">Lowest FBA (Sellers)</div>
+          <div class="cell">$ 115.00 (7)</div>
+        </div>
+        <div class="table-row">
+          <div class="cell">Lowest FBM (Sellers)</div>
+          <div class="cell">$ 107.98 (33)</div>
+        </div>
+        <div class="table-row">
+          <div class="cell">Keepa BSR Drops</div>
+          <div class="cell">136 last 30 days</div>
+        </div>
+        <div class="table-row">
+          <div class="cell">Net BB Price Changes</div>
+          <div class="cell">2 last 30 days</div>
+        </div>
+        <div class="table-row">
+          <div class="cell">Time to Sale</div>
+          <div class="cell">Not enough data</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="alerts-table">
+
+      <div class="table-header3">
+        Alerts
+      </div>
+      <div class="table-content">
+        <div class="table-row">
+          <div class="cell">Amazon Share Buy Box</div>
+          <div class="cell">Never on Listing</div>
+        </div>
+        <div class="table-row">
+          <div class="cell">IP Analysis</div>
+          <div class="cell">Nike is not a known PL brand</div>
+        </div>
+        <div class="table-row">
+          <div class="cell">Private Label</div>
+          <div class="cell">No known IP issues</div>
+        </div>
+        <div class="table-row">
+          <div class="cell">Size</div>
+          <div class="cell">Standard Size</div>
+        </div>
+        <div class="table-row">
+          <div class="cell">Meltable</div>
+          <div class="cell">No</div>
+        </div>
+        <div class="table-row">
+          <div class="cell">Variations</div>
+          <div class="cell" id="sidebar-variations"></div>
+        </div>
+      </div>
+    
+    </div>
+
+    <div class="chart-table">
+
+      <div class="table-header4">
+        Chart
+      </div>
+      <div class="chart-content">
+        <div class="chart-image">
+          <img id="keepa-chart" width="250" height="180" src="" alt="">
+          <div class="logo"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="calculator-table">
+      <div class="table-header5">
+        Calculator
+      </div>
+      <div class="calc-content">
+        <div class="swap-header">
+          <span>Swap</span>
+          <button class="settings">⚙️</button>
+        </div>
+        
+        <div class="cost-section">
+          <div class="cost-label">Cost Price</div>
+          <div class="cost-amount">0.00</div>
+          <div class="balance-row">
+            <span>Balance: 2.9389 ETH (Max)</span>
+            <span>≈$ 6726.2307</span>
+          </div>
+        </div>
+    
+        <div class="swap-icon">↕️</div>
+    
+        <div class="sale-section">
+          <div class="sale-label">Sale Price</div>
+          <div class="sale-amount">0.00</div>
+          <div class="balance-row">
+            <span>Balance: 400.9989 EOS</span>
+            <span>≈$ 284.6382</span>
+          </div>
+        </div>
+    
+        <div class="rate">1 EOS = 0.0003064ETH</div>
+    
+        <button class="calc-button">Calculate</button>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+ <!-- <div class="sidebar-content">
   <button id="close-button">Close</button>
   <h1>Amazon Products Info</h1>
   <img id="sidebar-image" width="100" height="100" src="" alt="">
@@ -10,12 +233,13 @@
   <p><strong>Brand:</strong> <span id="sidebar-brand">Loading...</span></p>
   <p><strong>Monthly Sold:</strong> <span id="sidebar-sold">Loading...</span></p>
   <p><strong>Fulfillment:</strong> <span id="sidebar-fulfillment">Loading...</span></p>
-  <p><strong>Lowest FBA:</strong> <span id="sidebar-lowest-fba">Loading...</span></p>
-  <p><strong>Lowest FBM:</strong> <span id="sidebar-lowest-fbm">Loading...</span></p>
   <p><strong>Variations:</strong> <span id="sidebar-variations">Loading...</span></p>
   <p><strong>Buybox Seller:</strong> <span id="sidebar-buybox">Loading...</span></p>
   <p><strong>Category:</strong> <span id="sidebar-category">Loading...</span></p>
   <p><strong>Merchant ID:</strong> <span id="sidebar-merchant">Loading...</span></p>
-  
+  <div class="img">
+    <img id="keepa-chart" width="250" height="180" src="" alt="">
+    <div class="logo"></div>
+  </div> 
+</div>  -->
 
-</div>

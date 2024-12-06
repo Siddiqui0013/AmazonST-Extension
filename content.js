@@ -128,7 +128,12 @@ if (buyboxSellerElement) {
   return data;
 }
 function fetchAndDisplayData() {
+
   const productData = getAmazonProductData();
+  const chartImg = `https://api.keepa.com/graphimage?key=2e327hvqq9m6q1umr6c2onbqr71pguhtum53drsopk60d5a9bdn68tu001fpoban&domain=1&width=350&height=250&asin=${productData.asin}`
+  document.getElementById("keepa-chart").src = chartImg
+
+
   if (!productData.asin) {
     console.error('No ASIN found');
     return;
@@ -139,8 +144,8 @@ function fetchAndDisplayData() {
   document.getElementById("sidebar-merchant").textContent = productData.merchantId || "Not found";
   document.getElementById("sidebar-price").textContent = productData.price || "Not found";
   document.getElementById("sidebar-fulfillment").textContent = productData.fulfillmentType? productData.fulfillmentType : "Not available";
-  document.getElementById("sidebar-lowest-fba").textContent = productData.lowestFBA || "Not available";
-  document.getElementById("sidebar-lowest-fbm").textContent = productData.lowestFBM || "Not available";
+  // document.getElementById("sidebar-lowest-fba").textContent = productData.lowestFBA || "Not available";
+  // document.getElementById("sidebar-lowest-fbm").textContent = productData.lowestFBM || "Not available";
   document.getElementById("sidebar-buybox").textContent = productData.buyboxSeller || "Not available";
 
   fetch(`https://api.keepa.com/product?domain=1&key=2e327hvqq9m6q1umr6c2onbqr71pguhtum53drsopk60d5a9bdn68tu001fpoban&asin=${productData.asin}`)
