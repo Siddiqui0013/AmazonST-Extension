@@ -11,9 +11,48 @@
   border-radius: 8px 0 0 8px;
 }
 
+.nav-buttons {
+  display: flex;
+  justify-content: space-around;
+  padding: 10px;
+  border-bottom: 1px solid #eee;
+}
+
+.nav-btn {
+  padding: 5px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-size: 14px;
+  border-radius: 4px;
+  transition: all 0.3s ease;
+}
+
+.nav-btn:hover {
+  background: #f5f5f5;
+}
+
+.nav-btn.active {
+  background: #0E4DA4;
+  color: white;
+  font-weight: bold;
+}
+
+#product-insights,
+#seller-insights {
+  transition: display 0.3s ease;
+}
+
 .sidebar-content {
   padding: 0;
   margin: 0;
+  position: relative;
+  z-index: 10000;
+}
+.btns{
+  display : absolute;
+  right: 10px;
+  top: 10px;
 }
 .header {
   position: sticky;
@@ -257,13 +296,6 @@
   font-size: 1.5rem;
   color: #0052FF;
   margin: 0.5rem 0;
-}
-
-.balance-row {
-  display: flex;
-  justify-content: space-between;
-  color: #6B7280;
-  font-size: 0.875rem;
 }
 
 .swap-icon {

@@ -1,3 +1,34 @@
+// async function createSidebar() {
+//   const existingSidebar = document.getElementById('amazon-product-sidebar');
+//   if (existingSidebar) {
+//     existingSidebar.style.display = existingSidebar.style.display === 'none' ? 'block' : 'none';
+//     return;
+//   }
+
+//   try {
+//     const response = await fetch(chrome.runtime.getURL('sidebar.html'));
+//     const html = await response.text();
+
+//     const sidebar = document.createElement('div');
+//     sidebar.id = 'amazon-product-sidebar';
+//     sidebar.innerHTML = html
+//     document.body.appendChild(sidebar)
+
+//     sidebar.querySelector('#close-button').addEventListener('click', () => {
+//       sidebar.style.display = 'none';
+//     });
+
+//     fetchAndDisplayData();
+//   } catch (error) {
+//     console.error('Error loading sidebar:', error);
+//   }
+// }
+
+// const productPage = document.getElementById('product-insights');
+// const sellerPage = document.getElementById('seller-insights');
+
+// sellerPage.style.display = 'none';
+
 async function createSidebar() {
   const existingSidebar = document.getElementById('amazon-product-sidebar');
   if (existingSidebar) {
@@ -14,6 +45,25 @@ async function createSidebar() {
     sidebar.innerHTML = html;
     document.body.appendChild(sidebar);
 
+    const productButton = sidebar.querySelector('#product-btn');
+    const sellerButton = sidebar.querySelector('#seller-btn');
+    const productSection = sidebar.querySelector('#product-insights');
+    const sellerSection = sidebar.querySelector('#seller-insights');
+
+    productButton.addEventListener('click', () => {
+      productButton.classList.add('active');
+      sellerButton.classList.remove('active');
+      productSection.style.display = 'block';
+      sellerSection.style.display = 'none';
+    });
+
+    sellerButton.addEventListener('click', () => {
+      sellerButton.classList.add('active');
+      productButton.classList.remove('active');
+      productSection.style.display = 'none';
+      sellerSection.style.display = 'block';
+    });
+
     sidebar.querySelector('#close-button').addEventListener('click', () => {
       sidebar.style.display = 'none';
     });
@@ -23,6 +73,8 @@ async function createSidebar() {
     console.error('Error loading sidebar:', error);
   }
 }
+
+
 
 function getAmazonProductData() {
 
@@ -124,49 +176,105 @@ if (buyboxSellerElement) {
     buyboxSeller
   };
 
-  console.log('Collected product data:', data);
-  return data;
-}
+let productDetails = {};
+
+const rows = document.querySelectorAll('tr');
+rows.forEach(row => {
+  const label = row.querySelector('th')?.textContent.trim();
+  const value = row.querySelector('td')?.textContent.trim();
+  
+  if (label && value) {
+    switch(label) {
+      case 'Product Dimensions':
+        productDetails.dimensions = value;
+        break;
+      case 'Item Weight':
+        productDetails.weight = value;
+        break;
+      case 'Item model number':
+        productDetails.modelNumber = value;
+        break;
+      case 'Best Sellers Rank':
+        productDetails.bsr = value;
+        break;
+      case 'Date First Available':
+        productDetails.dateAvailable = value;
+        break;
+      case 'Country of Origin':
+        productDetails.country = value;
+        break;
+    }
+  }
+});
+
+return {
+  ...data,
+  productDetails
+}}
 function fetchAndDisplayData() {
 
   const productData = getAmazonProductData();
-  const chartImg = `https://api.keepa.com/graphimage?key=2e327hvqq9m6q1umr6c2onbqr71pguhtum53drsopk60d5a9bdn68tu001fpoban&domain=1&width=350&height=250&asin=${productData.asin}`
-  document.getElementById("keepa-chart").src = chartImg
+    const chartImg = `https://api.keepa.com/graphimage?key=2e327hvqq9m6q1umr6c2onbqr71pguhtum53drsopk60d5a9bdn68tu001fpoban&domain=1&width=350&height=250&asin=${productData.asin}`;
+    document.getElementById("keepa-chart").src = chartImg;
 
+    if (!productData.asin) {
+      console.error('No ASIN found');
+      return;
+    }
 
-  if (!productData.asin) {
-    console.error('No ASIN found');
-    return;
-  }
+    document.getElementById("sidebar-image").src = productData.mainImage;
+    document.getElementById("sidebar-asin").textContent = productData.asin || "Not found";
+    document.getElementById("sidebar-merchant").textContent = productData.merchantId || "Not found";
+    document.getElementById("sidebar-price").textContent = productData.price || "Not found";
+    document.getElementById("sidebar-fulfillment").textContent = productData.fulfillmentType || "Not available";
+    document.getElementById("sidebar-buybox").textContent = productData.buyboxSeller || "Not available";
 
-  document.getElementById("sidebar-image").src = productData.mainImage
-  document.getElementById("sidebar-asin").textContent = productData.asin || "Not found";
-  document.getElementById("sidebar-merchant").textContent = productData.merchantId || "Not found";
-  document.getElementById("sidebar-price").textContent = productData.price || "Not found";
-  document.getElementById("sidebar-fulfillment").textContent = productData.fulfillmentType? productData.fulfillmentType : "Not available";
-  // document.getElementById("sidebar-lowest-fba").textContent = productData.lowestFBA || "Not available";
-  // document.getElementById("sidebar-lowest-fbm").textContent = productData.lowestFBM || "Not available";
-  document.getElementById("sidebar-buybox").textContent = productData.buyboxSeller || "Not available";
+    if (productData.productDetails) {
 
-  fetch(`https://api.keepa.com/product?domain=1&key=2e327hvqq9m6q1umr6c2onbqr71pguhtum53drsopk60d5a9bdn68tu001fpoban&asin=${productData.asin}`)
-    .then((res) => res.json())
-    .then((data) => {
-      const result = data.products[0];
-      if (result) {
-        document.getElementById("sidebar-title").textContent = result.title || "Not available";
-        document.getElementById("sidebar-brand").textContent = result.brand || "Not available";
-        document.getElementById("sidebar-fba").textContent = parseFloat(result.fbaFees.pickAndPackFee) / 100 + " $"
-        document.getElementById("sidebar-sold").textContent = result.monthlySold ? result.monthlySold + " +" : "Not available";
-        document.getElementById("sidebar-category").textContent =  result.categoryTree?.[0]?.name || "Not available";
-        document.getElementById("sidebar-variations").textContent = result.variations.length || "Not available";
-      } else {
-        console.error('No product data found from Keepa API');
+      function formatBSR(bsr) {
+        return bsr.split('\n')
+          .map(line => {
+            line = line.replace(/\([^)]*\)/g, '').trim();
+                  if (!line.startsWith('#')) {
+              line = line.replace(/#/g, ' #');
+            }
+            return line;
+          })
+          .join('\n');
       }
-    })
-    .catch((error) => {
-      console.error('Keepa API error:', error);
-    });
+
+      const bsr = productData.productDetails.bsr
+      const formattedBSR = formatBSR(bsr);
+
+      document.getElementById("sidebar-dimensions").textContent = productData.productDetails.dimensions || "N/A";
+      document.getElementById("sidebar-weight").textContent = productData.productDetails.weight || "N/A";
+      document.getElementById("sidebar-model").textContent = productData.productDetails.modelNumber || "N/A";
+      document.getElementById("sidebar-bsr").textContent = formattedBSR || "N/A";
+    }
+
+    fetch(`https://api.keepa.com/product?domain=1&key=2e327hvqq9m6q1umr6c2onbqr71pguhtum53drsopk60d5a9bdn68tu001fpoban&asin=${productData.asin}`)
+      .then((res) => res.json())
+      .then((data) => {
+        const result = data.products[0];
+        if (result) {
+          const titleExract = result.title;
+          const titleShort = titleExract.split(",")[0] || titleExract.split("-")[0];
+          document.getElementById("sidebar-title").textContent = titleShort || "Not available";
+          document.getElementById("sidebar-brand").textContent = result.brand || "Not available";
+          document.getElementById("sidebar-fba").textContent = parseFloat(result.fbaFees.pickAndPackFee) / 100 + " $";
+          document.getElementById("sidebar-sold").textContent = result.monthlySold ? result.monthlySold + " +" : "Not available";
+          document.getElementById("sidebar-category").textContent = result.categoryTree?.[0]?.name || "Not available";
+          document.getElementById("sidebar-variations").textContent = result.variations?.length || "Not available";
+        } else {
+          console.error('No product data found from Keepa API');
+        }
+      })
+      .catch((error) => {
+        console.error('Keepa API error:', error);
+      });
 }
+
+
 
 chrome.runtime.onMessage.addListener((message) => {
   if (message.action === "toggleSidebar") {
