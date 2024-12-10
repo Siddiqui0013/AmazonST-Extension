@@ -29,6 +29,36 @@
 
 // sellerPage.style.display = 'none';
 
+
+document.addEventListener('DOMContentLoaded', function() {
+  const tabButtons = document.querySelectorAll('.tab-button');
+  tabButtons.forEach(button => {
+    button.addEventListener('click', function(e) {
+      tabButtons.forEach(btn => btn.classList.remove('active'));
+      this.classList.add('active');
+    });
+  });
+});
+
+function initializeTabNavigation() {
+  const tabButtons = document.querySelectorAll('.tab-button');
+  
+  tabButtons.forEach(button => {
+    button.addEventListener('click', () => {
+      tabButtons.forEach(btn => btn.classList.remove('active'));
+      document.querySelectorAll('.tab-section').forEach(section => {
+        section.classList.remove('active');
+      });
+      button.classList.add('active');
+      const sectionId = button.getAttribute('data-section');
+      const section = document.getElementById(sectionId);
+      if (section) {
+        section.classList.add('active');
+      }
+    });
+  });
+}
+
 async function createSidebar() {
   const existingSidebar = document.getElementById('amazon-product-sidebar');
   if (existingSidebar) {
@@ -44,6 +74,7 @@ async function createSidebar() {
     sidebar.id = 'amazon-product-sidebar';
     sidebar.innerHTML = html;
     document.body.appendChild(sidebar);
+    initializeTabNavigation()
 
     const productButton = sidebar.querySelector('#product-btn');
     const sellerButton = sidebar.querySelector('#seller-btn');
@@ -73,8 +104,6 @@ async function createSidebar() {
     console.error('Error loading sidebar:', error);
   }
 }
-
-
 
 function getAmazonProductData() {
 
@@ -112,14 +141,6 @@ for (const selector of imageSelectors) {
 }
 
 let fulfillmentType = ""
-
-// if (document.getElementById("sellerProfileTriggerId") ) {
-//     fulfillmentType = 'FBA';
-// } else {
-//     fulfillmentType = 'FBM';
-// }
-
-  // fulfillmentType = document.getElementById("sellerProfileTriggerId").textContent
 
 if ( document.getElementById("sellerProfileTriggerId") ) {
     fulfillmentType = 'FBM';
@@ -164,10 +185,7 @@ if (buyboxSellerElement) {
 
   const data = {
     asin,
-    merchantId: document.getElementById("merchantID")?.value,
-    sessionId: document.getElementById("session-id")?.value,
     marketplace: document.querySelector("[name='marketplace']")?.value,
-    parentAsin: document.querySelector("[name='parentAsin']")?.value,
     price,
     mainImage,
     fulfillmentType,
@@ -224,32 +242,20 @@ function fetchAndDisplayData() {
 
     document.getElementById("sidebar-image").src = productData.mainImage;
     document.getElementById("sidebar-asin").textContent = productData.asin || "Not found";
-    document.getElementById("sidebar-merchant").textContent = productData.merchantId || "Not found";
     document.getElementById("sidebar-price").textContent = productData.price || "Not found";
     document.getElementById("sidebar-fulfillment").textContent = productData.fulfillmentType || "Not available";
     document.getElementById("sidebar-buybox").textContent = productData.buyboxSeller || "Not available";
 
     if (productData.productDetails) {
 
-      function formatBSR(bsr) {
-        return bsr.split('\n')
-          .map(line => {
-            line = line.replace(/\([^)]*\)/g, '').trim();
-                  if (!line.startsWith('#')) {
-              line = line.replace(/#/g, ' #');
-            }
-            return line;
-          })
-          .join('\n');
-      }
-
-      const bsr = productData.productDetails.bsr
-      const formattedBSR = formatBSR(bsr);
+      let inputString = productData.productDetails.bsr;
+      let endIndex = inputString.indexOf("(");
+      let trimmedString = inputString.slice(0, endIndex ).trim()
 
       document.getElementById("sidebar-dimensions").textContent = productData.productDetails.dimensions || "N/A";
       document.getElementById("sidebar-weight").textContent = productData.productDetails.weight || "N/A";
       document.getElementById("sidebar-model").textContent = productData.productDetails.modelNumber || "N/A";
-      document.getElementById("sidebar-bsr").textContent = formattedBSR || "N/A";
+      document.getElementById("sidebar-bsr").textContent = trimmedString ? trimmedString : "N/A";
     }
 
     fetch(`https://api.keepa.com/product?domain=1&key=2e327hvqq9m6q1umr6c2onbqr71pguhtum53drsopk60d5a9bdn68tu001fpoban&asin=${productData.asin}`)
@@ -258,8 +264,8 @@ function fetchAndDisplayData() {
         const result = data.products[0];
         if (result) {
           const titleExract = result.title;
-          const titleShort = titleExract.split(",")[0] || titleExract.split("-")[0];
-          document.getElementById("sidebar-title").textContent = titleShort || "Not available";
+          const titleShort = titleExract.slice(0, 80).trim();
+          document.getElementById("sidebar-title").textContent = titleShort + "......";
           document.getElementById("sidebar-brand").textContent = result.brand || "Not available";
           document.getElementById("sidebar-fba").textContent = parseFloat(result.fbaFees.pickAndPackFee) / 100 + " $";
           document.getElementById("sidebar-sold").textContent = result.monthlySold ? result.monthlySold + " +" : "Not available";
@@ -274,8 +280,6 @@ function fetchAndDisplayData() {
       });
 }
 
-
-
 chrome.runtime.onMessage.addListener((message) => {
   if (message.action === "toggleSidebar") {
     createSidebar();
@@ -289,13 +293,6 @@ if (window.location.pathname.includes('/dp/')) {
     createSidebar();
   }
 }
-
-
-
-
-
-
-
 
 
 
