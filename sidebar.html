@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Extension</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
   <div class="sidebar-content">
@@ -46,91 +47,158 @@
           <div class="box">
             <p><span id="sidebar-price">Loading...</span></p>
           </div>
+
+          <div class="icons-container">
+            <div class="icon">
+              <div class="icon-circle">
+                <i class="fab fa-google" id="google-icon"></i>
+              </div>
+            </div>
+            <div class="icon">
+              <div class="icon-circle">
+                <i class="fab fa-amazon" id="amazon-icon"></i>
+              </div>
+            </div>
+            <div class="icon">
+              <div class="icon-circle">
+                <i class="fas fa-desktop" id="webApp-icon"></i>
+              </div>
+            </div>
+            <div class="icon">
+              <div class="icon-circle">
+                <i class="fas fa-list" id="list-icon"></i>
+              </div>
+            </div>
+          </div>
+
         </section>
     
-        <div class="info-table">
-          <div class="table-header1">
-            Info
-          </div>
-          <div class="table-content">
-            <div class="table-row">
-              <div class="cell">Dimensions</div>
-              <div class="cell" id="sidebar-dimensions"></div>
+        <div class="info-section">
+          <div class="table-header1">Info</div>
+          <div class="info-grid">
+            <div class="info-item">
+              <div class="item-label">Eligible</div>
+              <div class="item-value" id="sidebar-fulfillment">Available</div>
             </div>
-            <div class="table-row">
-              <div class="cell">Weight</div>
-              <div class="cell" id="sidebar-weight"></div>
+            
+            <div class="info-item">
+              <div class="item-label">Size</div>
+              <div class="item-value" id="sidebar-dimensions" >Standard Size</div>
             </div>
-            <div class="table-row">
-              <div class="cell">Model</div>
-              <div class="cell" id="sidebar-model"></div>
+
+            <div class="info-item">
+              <div class="item-label">Weight</div>
+              <div class="item-value" id="sidebar-weight" >Standard Size</div>
             </div>
-            <div class="table-row">
-              <div class="cell">Eligible</div>
-              <div class="cell" id="sidebar-fulfillment"> </div>
+
+            <div class="info-item">
+              <div class="item-label">FBA fee</div>
+              <div class="item-value" id="sidebar-fba" ></div>
             </div>
-            <div class="table-row">
-              <div class="cell">Brand</div>
-              <div class="cell" id="sidebar-brand"></div>
+
+            <div class="info-item">
+              <div class="item-label">Category</div>
+              <div class="item-value" id="sidebar-category" >Standard Size</div>
             </div>
-            <div class="table-row">
-              <div class="cell">Est. Sales</div>
-              <div class="cell" id="sidebar-sold"></div>
+
+            <div class="info-item">
+              <div class="item-label">Brand</div>
+              <div class="item-value" id="sidebar-brand" >Standard Size</div>
             </div>
-            <div class="table-row">
-              <div class="cell">FBA Fee</div>
-              <div class="cell" id="sidebar-fba"></div>
+
+            <div class="info-item">
+              <div class="item-label">Model</div>
+              <div class="item-value" id="sidebar-model" >Standard Size</div>
             </div>
-            <div class="table-row">
-              <div class="cell">Category</div>
-              <div class="cell" id="sidebar-category"></div>
+        
+            <div class="info-item">
+              <div class="item-label">BSR</div>
+              <div class="item-value" style="color: red;" id="sidebar-bsr">Unknown</div>
+            </div>
+        
+            <div class="info-item">
+              <div class="item-label">Variations</div>
+              <div class="item-value" style="color: blue;" id="sidebar-variations">This listing has<br>245 variations</div>
+            </div>
+        
+            <div class="info-item">
+              <div class="item-label">Max Cost</div>
+              <div class="item-value" style="color: blue;">$ 62.98</div>
             </div>
           </div>
         </div>
+
       </div>
   
-      <div id="rank-price-section" class="tab-section">      
-        <div class="rank-price-table">
-          <div class="table-header2">
-            Rank & Price
+      <div id="rank-price-section">
+        <div class="table-header2">Rank & Price</div>
+        <div class="rank-price-grid">
+          <div class="grid-item">
+            <div class="item-label">BSR (Top %)</div>
+            <div class="item-value red">(0.00%)</div>
           </div>
-          <div class="table-content">
-            <div class="table-row">
-              <div class="cell">BSR</div>
-              <div class="cell" id="sidebar-bsr"></div>
-            </div>
-            <div class="table-row">
-              <div class="cell">Buy Box</div>
-              <div class="cell" id="sidebar-buybox"></div>
-            </div>
+          
+          <div class="grid-item">
+            <div class="item-label">Buy Box$</div>
+            <div class="item-value blue" id="sidebar-buybox">108.00</div>
+          </div>
+      
+          <div class="grid-item">
+            <div class="item-label">Amazon</div>
+            <div class="item-value">-</div>
+          </div>
+
+          <div class="grid-item">
+            <div class="item-label">Lowest FBA<br><span class="sub-label">(Sellers)</span></div>
+            <div class="item-value blue">$ 115 (7)</div>
+          </div>
+      
+          <div class="grid-item">
+            <div class="item-label">Lowest FBM<br><span class="sub-label">(Sellers)</span></div>
+            <div class="item-value green">$ 107.9 (3)</div>
+          </div>
+      
+          <div class="grid-item">
+            <div class="item-label">Keepa BSR<br><span class="sub-label">Drops</span></div>
+            <div class="item-value green">136<br><span class="sub-value">last 30 days</span></div>
+          </div>
+      
+          <div class="grid-item">
+            <div class="item-label">Net BB<br><span class="sub-label">Price Changes</span></div>
+            <div class="item-value red">2<br><span class="sub-value">last 30 days</span></div>
+          </div>
+      
+          <div class="grid-item">
+            <div class="item-label">Estimated Sales</div>
+            <div class="item-value blue" id="sidebar-sold">400+/</div>
+          </div>
+      
+          <div class="grid-item">
+            <div class="item-label">Time to Sale</div>
+            <div class="item-value red">Not enough<br>data</div>
           </div>
         </div>
       </div>
     
+      <div class="alerts-section">
+        <div class="table-header3">Alerts</div>
         <div class="alerts-table">
-          <div class="table-header3">
-            Alerts
+          <div class="alert-row">
+            <div class="alert-label">Amazon Share Buy Box</div>
+            <div class="alert-value green">Never on Listing</div>
           </div>
-          <div class="table-content">
-            <div class="table-row">
-              <div class="cell">Amazon Share Buy Box</div>
-              <div class="cell">Never on Listing</div>
-            </div>
-            <div class="table-row">
-              <div class="cell">IP Analysis</div>
-              <div class="cell">Nike is not a known PL brand</div>
-            </div>
-            <div class="table-row">
-              <div class="cell">Private Label</div>
-              <div class="cell">No known IP issues</div>
-            </div>
-            <div class="table-row">
-              <div class="cell">Variations</div>
-              <div class="cell" id="sidebar-variations"></div>
-            </div>
+          
+          <div class="alert-row">
+            <div class="alert-label">IP Analysis</div>
+            <div class="alert-value green">Nike is not a known PL brand</div>
           </div>
-        
+          
+          <div class="alert-row">
+            <div class="alert-label">Private Label</div>
+            <div class="alert-value red">No known IP issues</div>
+          </div>
         </div>
+      </div>
     
         <div id="chart-section" class="tab-section">
         <div class="chart-table">
@@ -147,31 +215,44 @@
       </div>
     
       <div id="calculator-section" class="tab-section">
-        <div class="calculator-table">
-          <div class="table-header5">
-            Calculator
-          </div>
-          <div class="calc-content">
-            <div class="swap-header">
-              <span>Swap</span>
-              <button class="settings">⚙️</button>
-            </div>
-            
-            <div class="cost-section">
-              <div class="cost-label">Cost Price</div>
-              <div class="cost-amount">0.00</div>
+
+        <div class="calculator-section">
+          <div class="table-header5">Calculator</div>
+          <div class="calculator-grid">
+            <div class="calc-field">
+              <label>Cost Price</label>
+              <div class="input-wrapper">
+                <span class="currency">$</span>
+                <input type="number" id="cost-price" class="calc-input" placeholder="0.00">
+              </div>
             </div>
         
-            <div class="swap-icon">↕️</div>
-        
-            <div class="sale-section">
-              <div class="sale-label">Sale Price</div>
-              <div class="sale-amount">0.00</div>
+            <div class="calc-field">
+              <label>Sale Price</label>
+              <div class="input-wrapper">
+                <span class="currency">$</span>
+                <input type="number" id="sale-price" class="calc-input" placeholder="0.00">
+              </div>
             </div>
         
-            <button class="calc-button">Calculate</button>
+            <div class="calc-field">
+              <label>Profit</label>
+              <div class="input-wrapper">
+                <span class="currency">$</span>
+                <input type="text" id="profit-result" class="calc-input" readonly>
+              </div>
+            </div>
+        
+            <div class="calc-field">
+              <label>ROI</label>
+              <div class="input-wrapper">
+                <span class="currency">$</span>
+                <input type="text" id="roi-result" class="calc-input" readonly>
+              </div>
+            </div>
           </div>
         </div>
+
       </div>
     
       </main>

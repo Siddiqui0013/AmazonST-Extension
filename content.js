@@ -40,6 +40,62 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 });
 
+function initializeCalculator(fbafee, price) {
+  const costInput = document.getElementById('cost-price');
+  const saleInput = document.getElementById('sale-price');
+  const profitOutput = document.getElementById('profit-result');
+  const roiOutput = document.getElementById('roi-result');
+  const fbaFee = fbafee;
+
+  costInput.value = '0.00';
+  saleInput.value = parseFloat(price) || '0.00';
+
+  function validatePositiveNumber(input) {
+    let value = input.value;
+    value = value.replace(/[^\d.]/g, '');
+    const parts = value.split('.');
+    if (parts.length > 2) value = parts[0] + '.' + parts.slice(1).join('');
+    const num = parseFloat(value);
+    if (num < 0 || isNaN(num)) {
+      value = '0';
+    }
+    input.value = value;
+    return num;
+  }
+
+  function calculateProfitAndROI() {
+    const cost = validatePositiveNumber(costInput);
+    const sale = validatePositiveNumber(saleInput);
+    const fba = parseFloat(fbaFee) || 0;
+    const profit = sale - (cost + fba);
+    
+    let roi = 0;
+    if (cost > 0) {
+      roi = (profit / cost) * 100;
+    } else {
+      roi = '∞';
+    }
+
+    profitOutput.value = isNaN(profit) ? '0.00' : profit.toFixed(2);
+    roiOutput.value = typeof roi === 'number' ? roi.toFixed(2) + '%' : roi + '%';
+
+    profitOutput.style.color = profit >= 0 ? '#00cc00' : '#ff4444';
+    roiOutput.style.color = profit >= 0 ? '#00cc00' : '#ff4444';
+  }
+  costInput.addEventListener('input', calculateProfitAndROI);
+  saleInput.addEventListener('input', calculateProfitAndROI);
+
+  costInput.addEventListener('blur', function() {
+    this.value = parseFloat(this.value || 0).toFixed(2);
+  });
+  
+  saleInput.addEventListener('blur', function() {
+    this.value = parseFloat(this.value || 0).toFixed(2);
+  });
+
+  calculateProfitAndROI();
+}
+
 function initializeTabNavigation() {
   const tabButtons = document.querySelectorAll('.tab-button');
   
@@ -98,8 +154,7 @@ async function createSidebar() {
     sidebar.querySelector('#close-button').addEventListener('click', () => {
       sidebar.style.display = 'none';
     });
-
-    fetchAndDisplayData();
+    fetchAndDisplayData()
   } catch (error) {
     console.error('Error loading sidebar:', error);
   }
@@ -149,8 +204,6 @@ if ( document.getElementById("sellerProfileTriggerId") ) {
 }
 
 
-
-
 let lowestFBA = null;
 let lowestFBM = null;
 const offerListElement = document.querySelector('#aod-offer-list');
@@ -169,13 +222,11 @@ if (offerListElement) {
     });
 }
 
-
 let buyboxSeller = null;
 const buyboxSellerElement = document.querySelector('#merchant-info');
 if (buyboxSellerElement) {
     buyboxSeller = buyboxSellerElement.textContent.trim();
 }
-
 
   let asin = document.getElementById("ASIN")?.value;
   if (!asin) {
@@ -229,9 +280,15 @@ return {
   ...data,
   productDetails
 }}
+
 function fetchAndDisplayData() {
 
-  const productData = getAmazonProductData();
+  let title
+  let asin
+  let fbafee
+  var Price
+
+    const productData = getAmazonProductData();
     const chartImg = `https://api.keepa.com/graphimage?key=2e327hvqq9m6q1umr6c2onbqr71pguhtum53drsopk60d5a9bdn68tu001fpoban&domain=1&width=350&height=250&asin=${productData.asin}`;
     document.getElementById("keepa-chart").src = chartImg;
 
@@ -240,11 +297,13 @@ function fetchAndDisplayData() {
       return;
     }
 
+    asin = productData.asin
     document.getElementById("sidebar-image").src = productData.mainImage;
-    document.getElementById("sidebar-asin").textContent = productData.asin || "Not found";
+    document.getElementById("sidebar-asin").textContent = asin || "Not found";
+    Price = productData.price?.replace(/[^0-9.]/g, '') || "0";
     document.getElementById("sidebar-price").textContent = productData.price || "Not found";
     document.getElementById("sidebar-fulfillment").textContent = productData.fulfillmentType || "Not available";
-    document.getElementById("sidebar-buybox").textContent = productData.buyboxSeller || "Not available";
+    // document.getElementById("sidebar-buybox").textContent = productData.buyboxSeller || "Not available";
 
     if (productData.productDetails) {
 
@@ -263,22 +322,37 @@ function fetchAndDisplayData() {
       .then((data) => {
         const result = data.products[0];
         if (result) {
-          const titleExract = result.title;
-          const titleShort = titleExract.slice(0, 80).trim();
+          title = result.title;
+          const titleShort = title.slice(0, 80).trim();
           document.getElementById("sidebar-title").textContent = titleShort + "......";
+          fbafee = parseFloat(result.fbaFees.pickAndPackFee) / 100
+
           document.getElementById("sidebar-brand").textContent = result.brand || "Not available";
-          document.getElementById("sidebar-fba").textContent = parseFloat(result.fbaFees.pickAndPackFee) / 100 + " $";
+          document.getElementById("sidebar-fba").textContent = fbafee + " $";
           document.getElementById("sidebar-sold").textContent = result.monthlySold ? result.monthlySold + " +" : "Not available";
           document.getElementById("sidebar-category").textContent = result.categoryTree?.[0]?.name || "Not available";
           document.getElementById("sidebar-variations").textContent = result.variations?.length || "Not available";
+
+          initializeCalculator(fbafee, Price);
+
         } else {
           console.error('No product data found from Keepa API');
         }
       })
       .catch((error) => {
         console.error('Keepa API error:', error);
-      });
-}
+      })
+
+      document.getElementById("google-icon").addEventListener("click", () =>{
+        const url = `https://www.google.com/search?q=${title}`;
+        window.open(url, '_blank');
+      })
+
+      document.getElementById("amazon-icon").addEventListener("click", () => {
+        const url = `https://www.amazon.com/dp/${asin}`;
+        window.open(url, '_blank');
+      })
+    }
 
 chrome.runtime.onMessage.addListener((message) => {
   if (message.action === "toggleSidebar") {
